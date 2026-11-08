@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenTranslator.Core", "ScreenTranslator.Core\ScreenTranslator.Core.csproj", "{F072A91C-30CC-4F5F-9239-39B5CC3E6E04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenTranslator.Core.Tests", "ScreenTranslator.Core.Tests\ScreenTranslator.Core.Tests.csproj", "{60D3E040-6157-4DA3-A2D2-824C5D0F03DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenTranslator.App", "ScreenTranslator.App\ScreenTranslator.App.csproj", "{D631C0ED-7EF9-4607-AEB5-BA9C53F43993}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F072A91C-30CC-4F5F-9239-39B5CC3E6E04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F072A91C-30CC-4F5F-9239-39B5CC3E6E04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F072A91C-30CC-4F5F-9239-39B5CC3E6E04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F072A91C-30CC-4F5F-9239-39B5CC3E6E04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60D3E040-6157-4DA3-A2D2-824C5D0F03DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60D3E040-6157-4DA3-A2D2-824C5D0F03DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60D3E040-6157-4DA3-A2D2-824C5D0F03DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60D3E040-6157-4DA3-A2D2-824C5D0F03DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D631C0ED-7EF9-4607-AEB5-BA9C53F43993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D631C0ED-7EF9-4607-AEB5-BA9C53F43993}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D631C0ED-7EF9-4607-AEB5-BA9C53F43993}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D631C0ED-7EF9-4607-AEB5-BA9C53F43993}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
