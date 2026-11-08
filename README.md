@@ -48,10 +48,10 @@ ollama pull qwen2.5:7b
 
 ## 建置
 
-Mac 需要 Swift 6 工具鏈：
+Mac 需要 Swift 6 工具鏈。在存放庫根目錄執行：
 
 ```bash
-swift test
+swift test --package-path Mac
 scripts/build-app.sh
 ```
 
@@ -71,10 +71,12 @@ scripts\build-windows.ps1
 ## 目錄
 
 ```
-App/                         Mac 介面、擷取、遮罩
-Core/                        Mac 翻譯流程與 Ollama 用戶端
-Tests/TranslatorCoreTests/   Mac 流程測試
-Support/Info.plist
+Mac/
+  App/                         介面、擷取、遮罩
+  Core/                        翻譯流程與 Ollama 用戶端
+  Tests/TranslatorCoreTests/   流程測試
+  Support/Info.plist
+  Package.swift
 scripts/build-app.sh
 scripts/build-windows.ps1
 Windows/

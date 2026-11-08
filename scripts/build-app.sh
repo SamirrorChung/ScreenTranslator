@@ -1,8 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
+ROOT="$(pwd)"
+cd Mac
 swift build -c release
-APP="dist/ScreenTranslator.app"
+APP="$ROOT/dist/ScreenTranslator.app"
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS"
 cp ".build/release/ScreenTranslator" "$APP/Contents/MacOS/ScreenTranslator"
