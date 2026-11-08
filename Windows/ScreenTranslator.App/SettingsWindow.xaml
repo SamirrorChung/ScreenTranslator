@@ -52,6 +52,7 @@
         <StackPanel Orientation="Horizontal">
             <Button Content="圈選區域" MinWidth="96" Padding="12,6" Margin="0,0,8,0" Click="OnSelectRegion"/>
             <Button Content="{Binding ToggleLabel}" MinWidth="96" Padding="12,6" IsDefault="True" Click="OnToggle"/>
+            <Button Content="紀錄" MinWidth="96" Padding="12,6" Margin="8,0,0,0" Click="OnShowLog"/>
         </StackPanel>
     </StackPanel>
 </Window>

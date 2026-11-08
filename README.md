@@ -9,7 +9,7 @@
 | 程式 | Swift 6、AppKit 選單列 | C#、WPF，系統匣 |
 | 系統 | macOS 14 以上 | Windows 10 2004 以上，含 Windows 11 |
 | 擷取 | ScreenCaptureKit | 螢幕 BitBlt |
-| 辨識 | Apple Vision | Windows.Media.Ocr |
+| 辨識 | Apple Vision | Windows 11 剪取工具的 OneOCR |
 | 設定 | UserDefaults | `%AppData%\ScreenTranslator\settings.json` |
 
 預設連到 `http://127.0.0.1:11434`，模型是 `qwen2.5:7b`。目標語言固定是繁體中文。
@@ -32,7 +32,7 @@ ollama pull qwen2.5:7b
 來源語言有：自動、日文、英文、簡體中文、繁體中文。
 
 - Mac 的「自動」會依序嘗試日文、英文、繁體中文、簡體中文，並依辨識信心取用。
-- Windows 的「自動」只用日文光學字元辨識。Windows OCR 一次只能指定一種語言，也沒有信心值。
+- Windows 不看來源語言，一律用剪取工具的 OneOCR。來源語言只影響翻譯提示。
 
 翻譯結果會快取。畫面短時間變成空白時，遮罩會再留約 0.4 秒才清掉，避免字幕閃爍。
 
@@ -42,9 +42,7 @@ ollama pull qwen2.5:7b
 
 ### Windows 光學字元辨識
 
-辨識用的是 Windows 語言元件，不是程式自己附帶的套件。到「設定 › 時間與語言 › 語言與地區」，打開該語言的「語言選項」，安裝對應的光學字元辨識。
-
-日文要先裝「基本鍵入」，「光學字元辨識」才會出現。英文、簡體中文、繁體中文也是各自的語言元件。沒裝時，設定視窗會提示要裝哪一種。
+Windows 版使用已安裝的「剪取工具」裡的 OneOCR，不需要另外安裝語言的光學字元辨識。第一次辨識會把辨識檔複製到 `%LocalAppData%\ScreenTranslator\oneocr`。沒有剪取工具時，設定視窗會提示到 Microsoft Store 安裝。
 
 ## 建置
 

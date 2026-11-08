@@ -90,18 +90,34 @@ public sealed class OllamaClient : ITextTranslating
 
     public async Task<string> Translate(string text, SourceLanguage sourceLanguage, string model, Uri endpoint)
     {
+        var prompt = TranslationText.SystemPrompt(sourceLanguage);
         var source = text.Trim();
-        if (source.Length == 0) throw TranslationException.EmptySource();
+        if (source.Length == 0)
+        {
+            Record(model, prompt, text, null, TranslationException.EmptySource().Message);
+            throw TranslationException.EmptySource();
+        }
 
-        var url = ChatUri(endpoint);
+        Uri url;
+        try
+        {
+            url = ChatUri(endpoint);
+        }
+        catch (TranslationException ex)
+        {
+            Record(model, prompt, source, null, ex.Message);
+            throw;
+        }
+
         var body = new ChatRequest
         {
             Model = model,
             Stream = false,
+            Think = false,
             KeepAlive = "30m",
             Messages =
             [
-                new ChatMessage { Role = "system", Content = TranslationText.SystemPrompt(sourceLanguage) },
+                new ChatMessage { Role = "system", Content = prompt },
                 new ChatMessage { Role = "user", Content = source },
             ],
             Options = new ChatOptions { Temperature = 0.1, NumPredict = 256 },
@@ -115,15 +131,40 @@ public sealed class OllamaClient : ITextTranslating
         {
             using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(20));
             using var response = await Http.SendAsync(request, timeout.Token);
-            if (response.StatusCode != HttpStatusCode.OK)
-                throw TranslationException.BadStatus((int)response.StatusCode);
             var payload = await response.Content.ReadAsStringAsync(timeout.Token);
-            var decoded = JsonSerializer.Deserialize<ChatResponse>(payload)
-                ?? throw TranslationException.EmptyResponse();
-            var content = decoded.Message?.Content;
-            if (string.IsNullOrEmpty(content)) throw TranslationException.EmptyResponse();
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                var status = TranslationException.BadStatus((int)response.StatusCode);
+                Record(model, prompt, source, payload, status.Message);
+                throw status;
+            }
+
+            ChatResponse? decoded;
+            try
+            {
+                decoded = JsonSerializer.Deserialize<ChatResponse>(payload);
+            }
+            catch (JsonException)
+            {
+                Record(model, prompt, source, payload, TranslationException.EmptyResponse().Message);
+                throw;
+            }
+
+            var content = decoded?.Message?.Content;
+            if (string.IsNullOrEmpty(content))
+            {
+                Record(model, prompt, source, payload, TranslationException.EmptyResponse().Message);
+                throw TranslationException.EmptyResponse();
+            }
+
             var cleaned = TranslationText.Clean(content);
-            if (cleaned.Length == 0) throw TranslationException.EmptyResponse();
+            if (cleaned.Length == 0)
+            {
+                Record(model, prompt, source, content, TranslationException.EmptyResponse().Message);
+                throw TranslationException.EmptyResponse();
+            }
+
+            Record(model, prompt, source, content, null);
             return cleaned;
         }
         catch (TranslationException)
@@ -136,8 +177,20 @@ public sealed class OllamaClient : ITextTranslating
         }
         catch (Exception)
         {
+            Record(model, prompt, source, null, TranslationException.Unreachable().Message);
             throw TranslationException.Unreachable();
         }
+    }
+
+    private static void Record(string model, string prompt, string content, string? response, string? error)
+    {
+        TranslationLog.Record(new TranslationExchange(
+            DateTimeOffset.Now,
+            model,
+            prompt,
+            content,
+            response,
+            error));
     }
 
     private static Uri ChatUri(Uri endpoint)
@@ -161,6 +214,9 @@ public sealed class OllamaClient : ITextTranslating
 
         [JsonPropertyName("stream")]
         public bool Stream { get; init; }
+
+        [JsonPropertyName("think")]
+        public bool Think { get; init; }
 
         [JsonPropertyName("keep_alive")]
         public required string KeepAlive { get; init; }

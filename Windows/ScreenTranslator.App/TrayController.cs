@@ -30,6 +30,8 @@ internal sealed class TrayController : IDisposable
         _toggleItem.Click += (_, _) => _model.ToggleRunning();
         var selectItem = new ToolStripMenuItem("圈選區域");
         selectItem.Click += (_, _) => _model.SelectRegion();
+        var logItem = new ToolStripMenuItem("紀錄…");
+        logItem.Click += (_, _) => LogWindow.ShowLatest();
         var settingsItem = new ToolStripMenuItem("設定…");
         settingsItem.Click += (_, _) => ShowSettings();
         var quitItem = new ToolStripMenuItem("結束");
@@ -41,6 +43,7 @@ internal sealed class TrayController : IDisposable
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add(_toggleItem);
         menu.Items.Add(selectItem);
+        menu.Items.Add(logItem);
         menu.Items.Add(settingsItem);
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add(quitItem);
@@ -76,6 +79,7 @@ internal sealed class TrayController : IDisposable
         }
         _icon.Dispose();
         _settings?.Close();
+        LogWindow.CloseLatest();
     }
 
     private void RefreshMenu()

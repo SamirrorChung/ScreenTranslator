@@ -103,6 +103,7 @@ public struct OllamaClient: TextTranslating {
         let body = ChatRequest(
             model: model,
             stream: false,
+            think: false,
             keepAlive: "30m",
             messages: [
                 .init(role: "system", content: TranslationText.systemPrompt(for: sourceLanguage)),
@@ -135,6 +136,7 @@ public struct OllamaClient: TextTranslating {
 private struct ChatRequest: Encodable {
     var model: String
     var stream: Bool
+    var think: Bool
     var keepAlive: String
     var messages: [Message]
     var options: Options
@@ -152,6 +154,7 @@ private struct ChatRequest: Encodable {
     enum CodingKeys: String, CodingKey {
         case model
         case stream
+        case think
         case keepAlive = "keep_alive"
         case messages
         case options

@@ -52,5 +52,7 @@ public partial class SettingsWindow : Window
 
     private void OnToggle(object sender, RoutedEventArgs e) => _model.ToggleRunning();
 
+    private void OnShowLog(object sender, RoutedEventArgs e) => LogWindow.ShowLatest();
+
     private sealed record LanguageOption(SourceLanguage Value, string Label);
 }
